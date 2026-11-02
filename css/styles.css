@@ -2125,3 +2125,62 @@ html[data-theme="light"] .card {
 .step-tag { display: inline-flex; gap: .5cqw; align-items: center; font: 700 .9cqw/1 var(--font-body); letter-spacing: .1em; text-transform: uppercase; color: #fff; background: var(--grad); padding: .45cqw .9cqw; border-radius: 99px; justify-self: start; }
 .fit__img { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 250'><defs><linearGradient id='s' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%234FC3F7'/><stop offset='1' stop-color='%23E1F5FE'/></linearGradient></defs><rect width='400' height='250' fill='url(%23s)'/><circle cx='300' cy='70' r='28' fill='%23FFD54F'/><ellipse cx='110' cy='265' rx='220' ry='115' fill='%2343A047'/><ellipse cx='350' cy='270' rx='180' ry='100' fill='%232E7D32'/></svg>"); }
 .fit { align-content: start; }
+
+/* =========================================================
+   v5 · Custom widgets (lecture 8)
+   ========================================================= */
+
+/* InfoCard row inside a phone (Colors.grey.shade200 + colored icon) */
+.ph .m-info {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .7em;
+  padding: .85em .9em;
+  border-radius: .6em;
+  background: #EEEEEE;
+  color: #1D1B20;
+  font-size: .9em;
+  white-space: nowrap;
+}
+.ph .m-info .ico { width: 1.3em; height: 1.3em; color: var(--ic, #2196F3); }
+.ph .m-info.is-tag { outline: .14em dashed #FFB300; outline-offset: .2em; }
+.ph .m-info.is-tag::after {
+  content: attr(data-tag);
+  position: absolute;
+  top: -.85em;
+  right: .5em;
+  padding: .12em .45em;
+  border-radius: .3em;
+  background: #FFB300;
+  color: #1B1B1B;
+  font: 700 .62em/1.2 var(--font-mono);
+}
+
+/* Class (cookie cutter) → each use (cookies) */
+.cutter { grid-template-columns: .95fr auto 1.15fr; grid-template-rows: auto auto; align-items: stretch; align-content: start; gap: 1.6cqw 1.2cqw; }
+.cutter .card { display: grid; gap: 1cqw; align-content: start; }
+.cutter .card .badge { justify-self: start; }
+.cutter .card p { font-size: 1.3cqw; line-height: 1.45; }
+.cutter > .callout { grid-column: 1 / -1; font-size: 1.3cqw; }
+
+/* Before / after counters */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2cqw; }
+.stat { display: grid; gap: .35cqw; padding: 1.1cqw 1.4cqw; }
+.stat small { font: 600 .85cqw/1.2 var(--font-body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.stat b { font: 700 2.4cqw/1.05 var(--font-head); }
+.stat span { font-size: 1.1cqw; line-height: 1.35; color: var(--muted); }
+.stat--bad b { color: var(--bad); }
+.stat--ok b { color: var(--ok); }
+
+/* VS Code quick-fix menu (Ctrl + .) */
+.qfix { padding: .4cqw 0 .6cqw; }
+.qfix h6 { font: 600 .8cqw/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: #6B7A93; padding: .7cqw 1.3cqw .4cqw; }
+.qfix .palette__item { justify-content: flex-start; gap: .7cqw; }
+.qfix .palette__item .ico { color: #FFC857; font-size: 1.1cqw; }
+.qfix__bulb { display: flex; align-items: center; gap: .6cqw; padding: .6cqw 1.3cqw; border-bottom: 1px solid rgba(255, 255, 255, .08); font: 500 .9cqw/1 var(--font-body); color: #8C9BB3; }
+.qfix__bulb .ico { color: #FFC857; font-size: 1.2cqw; }
+
+/* Three checklist cards side by side */
+.row3 { grid-template-columns: repeat(3, 1fr); }
+.row3 .checklist li { font-size: 1.32cqw; }

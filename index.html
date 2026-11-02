@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lecture 08 · Build a Login Page</title>
-  <meta name="description" content="Mobile App Development with Flutter, Lecture 08: Building a complete login page step by step, plus SnackBar and GestureDetector.">
+  <title>Lecture 08 · Custom Widgets</title>
+  <meta name="description" content="Mobile App Development with Flutter, Lecture 08: Build your own custom widgets, give them data with parameters, reuse them everywhere, then build a complete login page.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Sora:wght@600;700&amp;display=swap" rel="stylesheet">
@@ -75,8 +75,8 @@
   <div class="canvas"><div class="frame frame--title">
     <div class="stagger">
       <p class="kicker">Lecture 08 · Mobile App Development</p>
-      <h1 class="hero">Build a<br><span class="grad-text">Login Page</span></h1>
-      <p class="lead lead--hero">Everything you've learned, in one real screen, built step by step.</p>
+      <h1 class="hero">Build Your Own<br><span class="grad-text">Custom Widgets</span></h1>
+      <p class="lead lead--hero">Write a widget once, reuse it everywhere. Then put it to work in a real login page.</p>
       <div class="chips">
         <span class="chip"><span class="avatar">MI</span>Eng. Monther Ibrahim</span>
         <span class="chip"><span class="avatar">M</span>Muhammad, M.Sc.</span>
@@ -88,21 +88,19 @@
       <div class="logo-glow" style="left:12%; top:10%;"></div>
       <div class="ph" style="--pw:15.5cqw;">
         <div class="ph__scr"><div class="ph__island"></div>
-          <div class="col" style="gap:.7em; padding-top:2.6em;">
-            <div style="display:grid; place-items:center;"><svg class="logo" style="width:3em; height:3.8em;"><use href="#flutter-logo"/></svg></div>
-            <div class="m-title" style="text-align:center;">Welcome back</div>
-            <div class="m-sub" style="text-align:center;">Log in to continue</div>
-            <div class="m-field" style="margin-top:.5em;"><svg class="ico"><use href="#i-mail"/></svg>Email</div>
-            <div class="m-field"><svg class="ico"><use href="#i-lock"/></svg>Password</div>
-            <div class="m-btn m-btn--text" style="align-self:flex-end; height:2em;">Forgot password?</div>
-            <div class="m-btn m-btn--fill is-wide">Login</div>
-            <div class="rowx" style="justify-content:center; font-size:.82em; gap:.25em;"><span>Don't have an account?</span><b style="color:#6750A4;">Sign up</b></div>
+          <div class="col" style="gap:.85em; padding-top:2.8em;">
+            <div style="display:grid; place-items:center;"><div class="m-avatar">AA</div></div>
+            <div class="m-title" style="text-align:center;">Ahmed Ali</div>
+            <div class="m-sub" style="text-align:center; margin:-.5em 0 .6em;">Flutter student</div>
+            <div class="m-info is-tag" data-tag="InfoCard"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+            <div class="m-info is-tag" data-tag="InfoCard"><svg class="ico"><use href="#i-phone"/></svg>091 234 5678</div>
+            <div class="m-info is-tag" data-tag="InfoCard"><svg class="ico"><use href="#i-map-pin"/></svg>Tripoli</div>
           </div>
         </div>
       </div>
     </div>
   </div></div>
-  <aside class="notes"><p>Today's screen is exactly what Project 2 asks for, so students who follow along will have a strong start.</p></aside>
+  <aside class="notes"><p>Today has two parts. Part 1: make our own widgets and reuse them. Part 2: build the login page for Project 2, and finish by building it with our own widgets.</p></aside>
 </section>
 
 <!-- 02 · Today -->
@@ -110,6 +108,498 @@
   <div class="canvas"><div class="frame">
     <header class="head">
       <p class="kicker">Today</p>
+      <h2 class="title">Write it once, use it everywhere</h2>
+      <p class="lead">Copying and pasting the same widgets again and again? Time to make <b>your own widget</b>.</p>
+    </header>
+    <div class="body" style="grid-template-rows: 1fr auto;">
+      <div class="journey stagger">
+        <div class="stop"><div class="stop__dot"><svg class="ico"><use href="#i-copy"/></svg><span class="stop__n">1</span></div><h3>Spot</h3><p>find the copy-paste</p></div>
+        <div class="stop"><div class="stop__dot"><svg class="ico"><use href="#i-package"/></svg><span class="stop__n">2</span></div><h3>Extract</h3><p>move it into a class</p></div>
+        <div class="stop"><div class="stop__dot"><svg class="ico"><use href="#i-gear"/></svg><span class="stop__n">3</span></div><h3>Customize</h3><p>give it parameters</p></div>
+        <div class="stop"><div class="stop__dot"><svg class="ico"><use href="#i-layers"/></svg><span class="stop__n">4</span></div><h3>Reuse</h3><p>many places, own file</p></div>
+        <div class="stop"><div class="stop__dot"><svg class="ico"><use href="#i-lock"/></svg><span class="stop__n">5</span></div><h3>Login page</h3><p>a real screen</p></div>
+      </div>
+      <div class="callout callout--ok goal"><svg class="ico"><use href="#i-target"/></svg><div><b>Goal:</b> build your own widgets, reuse them, and use them in a complete login page.</div></div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Students already wrote a custom widget in lecture 3 without knowing it: MyApp. New today: a constructor with parameters, <code>final</code>, <code>required</code>, default values and passing a function.</p></aside>
+</section>
+
+<!-- 03 · The problem -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Step 1 · Spot</p>
+      <h2 class="title">The problem: copy, paste, repeat</h2>
+    </header>
+    <div class="body" style="grid-template-columns: 1fr .8fr auto; gap: 2cqw; align-items:start;">
+      <div class="term code">
+        <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span><span class="grow"></span><span>profile page</span></div>
+<pre class="hl" data-hl="9,11,16-17">Container(
+  padding: const EdgeInsets.all(16),
+  decoration: BoxDecoration(
+    color: Colors.grey.shade200,
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: const Row(
+    children: [
+      Icon(Icons.email, color: Colors.blue),
+      SizedBox(width: 12),
+      Text('ahmed@email.com'),
+    ],
+  ),
+),
+const SizedBox(height: 12),
+// copy, paste, change 2 lines → phone
+// copy, paste, change 2 lines → city</pre>
+      </div>
+      <div class="explain stagger">
+        <div class="say"><p>3 rows = about <b>45 lines</b>. But only <b>2 lines</b> change in each copy.</p></div>
+        <div class="callout callout--warn"><svg class="ico"><use href="#i-alert"/></svg><div>Want rounder corners? Change it in <b>3 places</b>.</div></div>
+        <div class="callout callout--warn"><svg class="ico"><use href="#i-alert"/></svg><div>Forget one, and the rows don't match anymore.</div></div>
+        <div class="callout callout--info"><svg class="ico"><use href="#i-bulb"/></svg><div>Copy-paste is a sign: <b>make it a widget</b>.</div></div>
+      </div>
+      <div class="ph" style="--pw:12.5cqw;">
+        <div class="ph__scr"><div class="ph__island"></div>
+          <div class="col" style="gap:.85em; padding-top:2.8em;">
+            <div style="display:grid; place-items:center;"><div class="m-avatar">AA</div></div>
+            <div class="m-title" style="text-align:center;">Ahmed Ali</div>
+            <div class="m-sub" style="text-align:center; margin:-.5em 0 .6em;">Flutter student</div>
+            <div class="m-info"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+            <div class="m-info"><svg class="ico"><use href="#i-phone"/></svg>091 234 5678</div>
+            <div class="m-info"><svg class="ico"><use href="#i-map-pin"/></svg>Tripoli</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Ask the class: what is the same in all three rows? Everything except the icon and the text. Those two things are what will change, so they become <b>parameters</b>.</p></aside>
+</section>
+
+<!-- 04 · The idea -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">The idea</p>
+      <h2 class="title">A custom widget is a class you write</h2>
+      <p class="lead">You already wrote one: <code>MyApp</code>! A custom widget is a class that <b>builds other widgets</b>.</p>
+    </header>
+    <div class="body cutter">
+      <article class="card">
+        <span class="badge">Written once</span>
+        <h3>The class</h3>
+        <div class="term code code--nonum">
+<pre class="hl">class InfoCard extends StatelessWidget {
+  // what data it needs
+  // what it looks like
+}</pre>
+        </div>
+        <p>Like a <b>cookie cutter</b>: it decides the shape.</p>
+      </article>
+      <div class="arrow-mid"><svg class="ico"><use href="#i-arrow-right"/></svg></div>
+      <article class="card">
+        <span class="badge badge--ok">Used many times</span>
+        <h3>Each use</h3>
+        <div class="term code code--nonum code--sm">
+<pre class="hl">InfoCard(icon: Icons.email, text: 'ahmed@email.com'),
+InfoCard(icon: Icons.phone, text: '091 234 5678'),
+InfoCard(icon: Icons.location_on, text: 'Tripoli'),</pre>
+        </div>
+        <p>Like the <b>cookies</b>: same shape, different data.</p>
+      </article>
+      <div class="callout callout--info"><svg class="ico"><use href="#i-info"/></svg><div><b>Text</b>, <b>Icon</b> and <b>ElevatedButton</b> are classes too. The Flutter team wrote them. Today you write your own.</div></div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>The cookie cutter idea: you design the shape once (the class), then make as many cookies as you want (each <code>InfoCard(...)</code>), each with its own data.</p></aside>
+</section>
+
+<!-- 05 · Step 2 extract -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Step 2 · Extract</p>
+      <h2 class="title">Move the code into its own class</h2>
+    </header>
+    <div class="body" style="grid-template-columns: 1fr .8fr auto; gap: 2cqw; align-items:start;">
+      <div class="term code code--sm">
+        <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span><span class="grow"></span><span>at the bottom</span></div>
+<pre class="hl" data-hl="1-2,4-6,19-21">class InfoCard extends StatelessWidget {
+  const InfoCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.email, color: Colors.blue),
+          SizedBox(width: 12),
+          Text('ahmed@email.com'),
+        ],
+      ),
+    );
+  }
+}</pre>
+      </div>
+      <div class="explain stagger">
+        <ol class="steps steps--tight" style="font-size:1.3cqw;">
+          <li><span>Type <code>stless</code>, press <kbd>Enter</kbd>, name it <b>InfoCard</b></span></li>
+          <li><span><b>Cut</b> the Container and paste it after <code>return</code></span></li>
+          <li><span>Use it: <code>const InfoCard(),</code> three times</span></li>
+        </ol>
+        <div class="callout callout--warn"><svg class="ico"><use href="#i-alert"/></svg><div>Run it: all three cards say <b>ahmed@email.com</b>! The class must <b>receive</b> its data.</div></div>
+      </div>
+      <div class="ph" style="--pw:12.5cqw;">
+        <div class="ph__scr"><div class="ph__island"></div>
+          <div class="col" style="gap:.85em; padding-top:2.8em;">
+            <div style="display:grid; place-items:center;"><div class="m-avatar">AA</div></div>
+            <div class="m-title" style="text-align:center;">Ahmed Ali</div>
+            <div class="m-sub" style="text-align:center; margin:-.5em 0 .6em;">Flutter student</div>
+            <div class="m-info"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+            <div class="m-info"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+            <div class="m-info"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>The class goes at the bottom of main.dart, outside every other class. When you paste after <code>return</code>, change the last comma to a semicolon. Class names start with a capital letter.</p></aside>
+</section>
+
+<!-- 06 · Step 3 parameters -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Step 3 · Customize</p>
+      <h2 class="title">Parameters: give the widget its data</h2>
+    </header>
+    <div class="body walk">
+      <div class="term code code--sm">
+        <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span><span class="grow"></span><span>InfoCard</span></div>
+<pre class="hl" data-groups="2-6:g1;8-9:g2;16,18:g3">class InfoCard extends StatelessWidget {
+  const InfoCard({
+    super.key,
+    required this.icon,
+    required this.text,
+  });
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // … same padding and decoration …
+      child: Row(children: [
+        Icon(icon, color: Colors.blue),
+        const SizedBox(width: 12),
+        Text(text),
+      ]),
+    );
+  }
+}</pre>
+      </div>
+      <div class="explain">
+        <div class="legend-groups stagger">
+          <div class="lg" style="--c:#13B9FD;"><span class="n">1</span><b>Constructor: ask for the data</b><span><code>required</code> = you must give it. <code>this.icon</code> = save it in the field.</span></div>
+          <div class="lg" style="--c:#FFC857;"><span class="n">2</span><b>Fields: keep the data</b><span><code>final</code> = set once, never changes. <code>IconData</code> is the type of <code>Icons.email</code>.</span></div>
+          <div class="lg" style="--c:#4ADE80;"><span class="n">3</span><b>build(): use the data</b><span>Use <code>icon</code> and <code>text</code> like normal variables.</span></div>
+        </div>
+        <div class="callout callout--warn"><svg class="ico"><use href="#i-alert"/></svg><div>Remove <code>const</code> from the <code>Row</code>: its icon and text are different every time.</div></div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Read the class top to bottom: the constructor asks for the data, the fields keep it, build() uses it. The <code>{ }</code> in the constructor make these <b>named</b> parameters, so we write <code>icon:</code> and <code>text:</code> when we use it.</p></aside>
+</section>
+
+<!-- 07 · Step 4 reuse -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Step 4 · Reuse</p>
+      <h2 class="title">Use it: one line per card</h2>
+    </header>
+    <div class="body" style="grid-template-columns: 1fr auto; gap: 2.4cqw; align-items:start;">
+      <div class="side">
+        <div class="term code code--lg">
+          <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span><span class="grow"></span><span>profile page</span></div>
+<pre class="hl" data-hl="3,5,7">const Column(
+  children: [
+    InfoCard(icon: Icons.email, text: 'ahmed@email.com'),
+    SizedBox(height: 12),
+    InfoCard(icon: Icons.phone, text: '091 234 5678'),
+    SizedBox(height: 12),
+    InfoCard(icon: Icons.location_on, text: 'Tripoli'),
+  ],
+),</pre>
+        </div>
+        <div class="stats stagger">
+          <div class="card stat stat--bad"><small>A new row, before</small><b>+15 lines</b><span>copy, paste, edit</span></div>
+          <div class="card stat stat--ok"><small>A new row, now</small><b>+1 line</b><span>just another InfoCard</span></div>
+        </div>
+        <div class="callout callout--ok"><svg class="ico"><use href="#i-check-circle"/></svg><div>Change the design once inside <code>InfoCard</code>, and <b>all</b> the cards update.</div></div>
+      </div>
+      <div class="ph" style="--pw:12.5cqw;">
+        <div class="ph__scr"><div class="ph__island"></div>
+          <div class="col" style="gap:.85em; padding-top:2.8em;">
+            <div style="display:grid; place-items:center;"><div class="m-avatar">AA</div></div>
+            <div class="m-title" style="text-align:center;">Ahmed Ali</div>
+            <div class="m-sub" style="text-align:center; margin:-.5em 0 .6em;">Flutter student</div>
+            <div class="m-info is-tag" data-tag="InfoCard"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+            <div class="m-info is-tag" data-tag="InfoCard"><svg class="ico"><use href="#i-phone"/></svg>091 234 5678</div>
+            <div class="m-info is-tag" data-tag="InfoCard"><svg class="ico"><use href="#i-map-pin"/></svg>Tripoli</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Everything inside is <code>const</code>, so the whole Column can be <code>const</code>. Demo: change <code>BorderRadius.circular(12)</code> to <code>24</code> inside InfoCard, hot reload, and all three cards change together.</p></aside>
+</section>
+
+<!-- 08 · Default values -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Optional parameters</p>
+      <h2 class="title">Default values: settings you can skip</h2>
+    </header>
+    <div class="body" style="grid-template-columns: 1fr .85fr auto; gap: 2cqw; align-items:start;">
+      <div class="term code code--lg">
+        <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span><span class="grow"></span><span>InfoCard</span></div>
+<pre class="hl" data-hl="6,11,14">class InfoCard extends StatelessWidget {
+  const InfoCard({
+    super.key,
+    required this.icon,
+    required this.text,
+    this.color = Colors.blue,
+  });
+
+  final IconData icon;
+  final String text;
+  final Color color;
+
+  // build() now uses it:
+  //   Icon(icon, color: color),</pre>
+      </div>
+      <div class="side">
+        <div class="term code">
+          <div class="term__bar"><i></i><i></i><i></i><span>using it</span></div>
+<pre class="hl" data-hl="10">// no color → the default (blue)
+InfoCard(
+  icon: Icons.email,
+  text: 'ahmed@email.com',
+),
+// with a color
+InfoCard(
+  icon: Icons.favorite,
+  text: 'Loves Flutter',
+  color: Colors.red,
+),</pre>
+        </div>
+        <div class="defs stagger">
+          <div class="def"><code>= Colors.blue</code><span>The <b>default</b>: used when you leave it out</span></div>
+          <div class="def"><code>required</code><span>No default: you <b>must</b> give it</span></div>
+        </div>
+      </div>
+      <div class="ph" style="--pw:12.5cqw;">
+        <div class="ph__scr"><div class="ph__island"></div>
+          <div class="col" style="gap:.85em; padding-top:2.8em;">
+            <div style="display:grid; place-items:center;"><div class="m-avatar">AA</div></div>
+            <div class="m-title" style="text-align:center;">Ahmed Ali</div>
+            <div class="m-sub" style="text-align:center; margin:-.5em 0 .6em;">Flutter student</div>
+            <div class="m-info"><svg class="ico"><use href="#i-mail"/></svg>ahmed@email.com</div>
+            <div class="m-info"><svg class="ico"><use href="#i-phone"/></svg>091 234 5678</div>
+            <div class="m-info" style="--ic:#F44336;"><svg class="ico"><use href="#i-heart"/></svg>Loves Flutter</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>A default value must be a constant, like <code>Colors.blue</code>, <code>16</code> or <code>false</code>. The same idea is all over Flutter: <code>Text</code> has a default font size, so you only set <code>fontSize</code> when you want a different one.</p></aside>
+</section>
+
+<!-- 09 · Passing a function -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Parameters can be functions</p>
+      <h2 class="title">A reusable button: pass a function</h2>
+    </header>
+    <div class="body walk">
+      <div class="term code code--sm">
+        <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span><span class="grow"></span><span>AppButton</span></div>
+<pre class="hl" data-hl="5,9,16">class AppButton extends StatelessWidget {
+  const AppButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+  });
+
+  final String text;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        child: Text(text),
+      ),
+    );
+  }
+}</pre>
+      </div>
+      <div class="explain stagger">
+        <div class="defs">
+          <div class="def"><code>VoidCallback</code><span>The type of a function like <code>() { }</code>: no inputs, gives nothing back</span></div>
+          <div class="def"><code>onPressed: onPressed</code><span>The button runs <b>your</b> function</span></div>
+        </div>
+        <div class="term code">
+          <div class="term__bar"><i></i><i></i><i></i><span>using it</span></div>
+<pre class="hl" data-hl="3-5">AppButton(
+  text: 'Save',
+  onPressed: () {
+    print('Saved!');
+  },
+),</pre>
+        </div>
+        <div class="callout callout--info"><svg class="ico"><use href="#i-bulb"/></svg><div>Same idea as lecture 7: <b>"when this happens, run this"</b>. Your widget takes the function and hands it to the button.</div></div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Each AppButton can do something different: Save, Login, Sign up. The look stays the same, only the text and the function change. We will use this button in the login page.</p></aside>
+</section>
+
+<!-- 10 · Own file -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Organize</p>
+      <h2 class="title">Give each widget its own file</h2>
+    </header>
+    <div class="body inside" style="align-items:start;">
+      <div class="side">
+        <div class="card tree">
+          <div class="row"><span><span class="d">lib/</span></span><span class="note"></span></div>
+          <div class="row"><span><span class="g">├─ </span><span class="f">main.dart</span></span><span class="note">the app and its pages</span></div>
+          <div class="row"><span><span class="g">└─ </span><span class="d">widgets/</span></span><span class="note">our own widgets</span></div>
+          <div class="row is-star"><span><span class="g">   ├─ </span><span class="f">info_card.dart</span></span><span class="note">InfoCard</span></div>
+          <div class="row is-star"><span><span class="g">   └─ </span><span class="f">app_button.dart</span></span><span class="note">AppButton</span></div>
+        </div>
+        <div class="card naming" style="grid-column:auto;">
+          <h4>Names</h4>
+          <span class="name-ok"><svg class="ico"><use href="#i-check"/></svg>info_card.dart</span>
+          <span class="name-ok"><svg class="ico"><use href="#i-check"/></svg>class InfoCard</span>
+          <span class="name-bad"><svg class="ico"><use href="#i-x"/></svg>InfoCard.dart</span>
+        </div>
+      </div>
+      <div class="side">
+        <div class="term code">
+          <div class="term__bar"><i></i><i></i><i></i><span>lib/widgets/info_card.dart</span></div>
+<pre class="hl" data-hl="1">import 'package:flutter/material.dart';
+
+class InfoCard extends StatelessWidget {
+  // … the same class as before …
+}</pre>
+        </div>
+        <div class="term code">
+          <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span></div>
+<pre class="hl" data-hl="2-3">import 'package:flutter/material.dart';
+import 'widgets/info_card.dart';
+import 'widgets/app_button.dart';</pre>
+        </div>
+        <div class="callout callout--info"><svg class="ico"><use href="#i-bulb"/></svg><div>Shortcut: type <code>InfoCard</code>, press <kbd>Ctrl</kbd> + <kbd>.</kbd> and choose <b>Import library</b>. VS Code writes the import for you.</div></div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Every widget file needs its own <code>import 'package:flutter/material.dart';</code> at the top. VS Code may write <code>import 'package:your_app/widgets/info_card.dart';</code> instead: both forms work.</p></aside>
+</section>
+
+<!-- 11 · Extract Widget shortcut -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Shortcut</p>
+      <h2 class="title">Let VS Code extract it for you</h2>
+    </header>
+    <div class="body" style="grid-template-columns: 1fr 1.05fr; gap: 2.4cqw; align-items:start;">
+      <div class="mock-col">
+        <div class="term code code--lg">
+          <div class="term__bar"><i></i><i></i><i></i><span>lib/main.dart</span></div>
+<pre class="hl" data-hl="2">children: [
+  Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(</pre>
+        </div>
+        <div class="palette qfix">
+          <div class="qfix__bulb"><svg class="ico"><use href="#i-bulb"/></svg>Ctrl + .</div>
+          <h6>Wrap</h6>
+          <div class="palette__item"><span>Wrap with widget...</span></div>
+          <div class="palette__item"><span>Wrap with Padding</span></div>
+          <h6>Extract</h6>
+          <div class="palette__item"><span>Extract Method</span></div>
+          <div class="palette__item"><span>Extract Local Variable</span></div>
+          <div class="palette__item is-sel"><svg class="ico"><use href="#i-sparkles"/></svg><span>Extract Widget</span></div>
+        </div>
+      </div>
+      <div class="side">
+        <ol class="steps bigsteps stagger">
+          <li><span>Click on the widget's name, for example <code>Container</code></span></li>
+          <li><span>Press <kbd>Ctrl</kbd> + <kbd>.</kbd> &nbsp;(Mac: <kbd>⌘</kbd> + <kbd>.</kbd>)</span></li>
+          <li><span>Choose <b>Extract Widget</b> and type a name: <code>InfoCard</code></span></li>
+        </ol>
+        <div class="callout callout--info"><svg class="ico"><use href="#i-info"/></svg><div><b>Android Studio:</b> right-click the widget → Refactor → Extract Flutter Widget…</div></div>
+        <div class="callout callout--warn"><svg class="ico"><use href="#i-alert"/></svg><div>The editor makes the class, but the data is still fixed inside. You add the <b>parameters</b> yourself (Step 3).</div></div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Do it by hand first (Steps 2 and 3) so students understand what the editor writes. Then show the shortcut: it saves a lot of typing.</p></aside>
+</section>
+
+<!-- 12 · Common mistakes -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Watch out</p>
+      <h2 class="title">Common mistakes and how to fix them</h2>
+    </header>
+    <div class="body probs">
+      <table class="tbl tbl--probs">
+        <thead><tr><th><svg class="ico"><use href="#i-alert"/></svg>The error says…</th><th><svg class="ico"><use href="#i-check-circle"/></svg>The fix</th></tr></thead>
+        <tbody>
+          <tr><td><span class="err">The named parameter 'text' is required, but there's no corresponding argument.</span></td><td>You forgot a value. Give it: <code>InfoCard(icon: …, text: '…')</code></td></tr>
+          <tr><td><span class="err">Too many positional arguments: 0 expected, but 2 found.</span></td><td>Write the names: <code>icon: Icons.email</code>, not just <code>Icons.email</code></td></tr>
+          <tr><td><span class="err">The parameter 'text' can't have a value of 'null' because of its type…</span></td><td>Add <code>required</code> before <code>this.text</code>, or give it a default value</td></tr>
+          <tr><td><span class="err">The method 'InfoCard' isn't defined…</span></td><td>The file is not imported. Add <code>import 'widgets/info_card.dart';</code></td></tr>
+          <tr><td><span class="err">Can't define a const constructor for a class with non-final fields.</span></td><td>Make every field <code>final</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Show one or two of these live: delete <code>required</code>, or forget a parameter, and read the red message together. Error messages tell you the fix if you read them slowly.</p></aside>
+</section>
+
+<!-- 13 · Part 2: login page -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Part 2 · Build a login page</p>
       <h2 class="title">How real developers build a screen</h2>
       <p class="lead">Never start typing straight away. <b>Look</b>, <b>plan</b>, then build in small steps.</p>
     </header>
@@ -125,10 +615,10 @@
     </div>
     <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
   </div></div>
-  <aside class="notes"><p>Everything today was taught in lectures 4–7. Only three things are new: SafeArea, SingleChildScrollView and SnackBar.</p></aside>
+  <aside class="notes"><p>Part 2. Everything here was taught in lectures 4–7. Only three things are new: SafeArea, SingleChildScrollView and SnackBar. At the end we rebuild the fields and the button with our own widgets.</p></aside>
 </section>
 
-<!-- 03 · The design -->
+<!-- 14 · The design -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -163,7 +653,7 @@
   <aside class="notes"><p>Ask the class: which widget would you use for each part? Collect answers before moving to the next slide.</p></aside>
 </section>
 
-<!-- 04 · Widget tree -->
+<!-- 15 · Widget tree -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -199,7 +689,7 @@
   <aside class="notes"><p>The two highlighted widgets are new: SafeArea keeps content away from the notch and status bar; SingleChildScrollView lets the page scroll when the keyboard opens.</p></aside>
 </section>
 
-<!-- 05 · Step 1 skeleton -->
+<!-- 16 · Step 1 skeleton -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -229,7 +719,7 @@
           <div class="def"><code>SingleChildScrollView</code><span>Lets the page <b>scroll</b>, so the keyboard never causes an overflow</span></div>
           <div class="def"><code>.stretch</code><span>Every child is <b>full width</b>, so buttons and fields too</span></div>
         </div>
-        <div class="callout callout--info"><svg class="ico"><use href="#i-bulb"/></svg><div>Make <b>LoginPage</b> its own StatelessWidget, and put it in <code>home:</code> of MaterialApp.</div></div>
+        <div class="callout callout--info"><svg class="ico"><use href="#i-bulb"/></svg><div><b>LoginPage</b> is a custom widget too: make it a StatelessWidget, and put it in <code>home:</code> of MaterialApp.</div></div>
       </div>
     </div>
     <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
@@ -237,7 +727,7 @@
   <aside class="notes"><p>Use the <code>stless</code> shortcut to create LoginPage. In MyApp: <code>home: const LoginPage()</code>. Lines starting with <code>//</code> are comments: Dart ignores them.</p></aside>
 </section>
 
-<!-- 06 · Step 2 header -->
+<!-- 17 · Step 2 header -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -276,7 +766,7 @@ const SizedBox(height: 32),</pre>
   <aside class="notes"><p>Run after this step. The screen already looks like the start of a real app.</p></aside>
 </section>
 
-<!-- 07 · Step 3 fields -->
+<!-- 18 · Step 3 fields -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -318,10 +808,10 @@ const TextField(
     </div>
     <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
   </div></div>
-  <aside class="notes"><p>Both fields use the same style. Next lecture we'll turn this repeated field into our own reusable widget so we don't copy-paste.</p></aside>
+  <aside class="notes"><p>Both fields use the same style. Ask: what did we learn in Part 1 about repeated code? At the end we turn this field into our own reusable widget.</p></aside>
 </section>
 
-<!-- 08 · Step 4 buttons -->
+<!-- 19 · Step 4 buttons -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -370,7 +860,7 @@ SizedBox(
   <aside class="notes"><p>Without Align, the TextButton would also stretch full width because of <code>.stretch</code>. Align lets it keep its own size.</p></aside>
 </section>
 
-<!-- 09 · Step 5 sign up row -->
+<!-- 20 · Step 5 sign up row -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -416,7 +906,7 @@ Row(
   <aside class="notes"><p>Demo the keyboard test: tap the password field on a small emulator. With SingleChildScrollView the page scrolls instead of showing the overflow stripes.</p></aside>
 </section>
 
-<!-- 10 · SnackBar -->
+<!-- 21 · SnackBar -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -457,7 +947,7 @@ Row(
   <aside class="notes"><p>Real login needs a server, which comes later in the course. For now the SnackBar shows the button works. Remove <code>const</code> from the Column's parent if the analyzer complains.</p></aside>
 </section>
 
-<!-- 11 · GestureDetector -->
+<!-- 22 · GestureDetector -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -488,14 +978,74 @@ Row(
   <aside class="notes"><p>Use a real button when the thing looks like a button. Use GestureDetector for cards, pictures and other non-button things.</p></aside>
 </section>
 
-<!-- 12 · Checklist -->
+<!-- 23 · Login with custom widgets -->
+<section class="slide">
+  <div class="canvas"><div class="frame">
+    <header class="head">
+      <p class="kicker">Put it together</p>
+      <h2 class="title">The login page, the reusable way</h2>
+    </header>
+    <div class="body walk">
+      <div class="term code code--sm">
+        <div class="term__bar"><i></i><i></i><i></i><span>lib/widgets/app_text_field.dart</span></div>
+<pre class="hl" data-hl="6,11,16" style="font-size:.95cqw;">class AppTextField extends StatelessWidget {
+  const AppTextField({
+    super.key,
+    required this.label,
+    required this.icon,
+    this.isPassword = false,
+  });
+
+  final String label;
+  final IconData icon;
+  final bool isPassword;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      obscureText: isPassword,
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon),
+        border: const OutlineInputBorder(),
+      ),
+    );
+  }
+}</pre>
+      </div>
+      <div class="side">
+        <div class="term code">
+          <div class="term__bar"><i></i><i></i><i></i><span>LoginPage · inside children: [ ]</span></div>
+<pre class="hl" data-hl="1,6,9,12">const AppTextField(
+  label: 'Email',
+  icon: Icons.email,
+),
+const SizedBox(height: 16),
+const AppTextField(
+  label: 'Password',
+  icon: Icons.lock,
+  isPassword: true,
+),
+// … Forgot password? …
+AppButton(text: 'Login', onPressed: () {}),</pre>
+        </div>
+        <div class="callout callout--ok"><svg class="ico"><use href="#i-check-circle"/></svg><div>Both fields share one style. Change the border in <b>one place</b>, and both fields update.</div></div>
+        <div class="callout callout--info"><svg class="ico"><use href="#i-star"/></svg><div><b>Your turn:</b> add a <code>keyboardType</code> parameter, so the email field opens the <b>@</b> keyboard.</div></div>
+      </div>
+    </div>
+    <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
+  </div></div>
+  <aside class="notes"><p>Same screen, less code. <code>AppButton</code> is the button from Part 1: put the SnackBar code inside <code>onPressed</code>. The Sign up page in a later project can reuse the same two widgets.</p></aside>
+</section>
+
+<!-- 24 · Checklist -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
       <p class="kicker">Quality check</p>
       <h2 class="title">Before you call a screen "done"</h2>
     </header>
-    <div class="body row2" style="align-items:start;">
+    <div class="body row3" style="align-items:start;">
       <article class="card">
         <h3>It works</h3>
         <ul class="checklist stagger">
@@ -514,13 +1064,22 @@ Row(
           <li><span>Two or three colors, used the same way</span></li>
         </ul>
       </article>
+      <article class="card">
+        <h3>The code is clean</h3>
+        <ul class="checklist stagger">
+          <li><span>No copy-paste: repeated parts are one custom widget</span></li>
+          <li><span>What changes is a parameter</span></li>
+          <li><span>Each widget in its own file</span></li>
+          <li><span>Clear names: <code>InfoCard</code>, not <code>Widget1</code></span></li>
+        </ul>
+      </article>
     </div>
     <footer class="foot"><span>Mobile App Development · Lecture 08</span><span class="num"></span></footer>
   </div></div>
-  <aside class="notes"><p>This is also how projects are graded: does it work, and does it look clean?</p></aside>
+  <aside class="notes"><p>This is also how projects are graded: does it work, and does it look clean? The third card is today's lesson: clean code is easier to change later.</p></aside>
 </section>
 
-<!-- 13 · Project 2 + wrap-up -->
+<!-- 25 · Project 2 + wrap-up -->
 <section class="slide">
   <div class="canvas"><div class="frame">
     <header class="head">
@@ -536,10 +1095,12 @@ Row(
           <li><span>No overflow when the keyboard is open</span></li>
           <li><span>Pushed to GitHub, instructor invited</span></li>
         </ul>
-        <p class="small muted" style="margin-top:1cqw;">Full requirements and marks: see the <b>course guide</b>.</p>
+        <p class="small" style="margin-top:1cqw;"><b>Tip:</b> build your fields and button as custom widgets, like <code>AppTextField</code> and <code>AppButton</code>.</p>
+        <p class="small muted" style="margin-top:.5cqw;">Full requirements and marks: see the <b>course guide</b>.</p>
       </article>
       <div class="side">
         <div class="videos">
+          <a class="video" href="https://www.youtube.com/watch?v=wE7khGHVkYY" target="_blank" rel="noopener"><span class="yt"><svg class="ico"><use href="#i-play"/></svg></span><span>How to Create Stateless Widgets · Flutter Widgets 101</span><small>6:58</small></a>
           <a class="video" href="https://www.youtube.com/watch?v=iTrqA8Ec0gQ" target="_blank" rel="noopener"><span class="yt"><svg class="ico"><use href="#i-play"/></svg></span><span>Gesture Detector · Widget of the Day #08</span><small>5:45</small></a>
           <a class="video" href="https://www.youtube.com/watch?v=3G497C9uy0M" target="_blank" rel="noopener"><span class="yt"><svg class="ico"><use href="#i-play"/></svg></span><span>Bonus: Alert Dialog · Widget of the Day #16</span><small>3:02</small></a>
         </div>
