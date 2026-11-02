@@ -2130,22 +2130,9 @@ html[data-theme="light"] .card {
    v5 · Custom widgets (lecture 8)
    ========================================================= */
 
-/* InfoCard row inside a phone (Colors.grey.shade200 + colored icon) */
-.ph .m-info {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: .7em;
-  padding: .85em .9em;
-  border-radius: .6em;
-  background: #EEEEEE;
-  color: #1D1B20;
-  font-size: .9em;
-  white-space: nowrap;
-}
-.ph .m-info .ico { width: 1.3em; height: 1.3em; color: var(--ic, #2196F3); }
-.ph .m-info.is-tag { outline: .14em dashed #FFB300; outline-offset: .2em; }
-.ph .m-info.is-tag::after {
+/* Yellow "this is our widget" tag on phone parts */
+.ph .is-tag { position: relative; outline: .14em dashed #FFB300; outline-offset: .2em; }
+.ph .is-tag::after {
   content: attr(data-tag);
   position: absolute;
   top: -.85em;
@@ -2155,6 +2142,7 @@ html[data-theme="light"] .card {
   background: #FFB300;
   color: #1B1B1B;
   font: 700 .62em/1.2 var(--font-mono);
+  white-space: nowrap;
 }
 
 /* Class (cookie cutter) → each use (cookies) */
@@ -2173,14 +2161,5 @@ html[data-theme="light"] .card {
 .stat--bad b { color: var(--bad); }
 .stat--ok b { color: var(--ok); }
 
-/* VS Code quick-fix menu (Ctrl + .) */
-.qfix { padding: .4cqw 0 .6cqw; }
-.qfix h6 { font: 600 .8cqw/1 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: #6B7A93; padding: .7cqw 1.3cqw .4cqw; }
-.qfix .palette__item { justify-content: flex-start; gap: .7cqw; }
-.qfix .palette__item .ico { color: #FFC857; font-size: 1.1cqw; }
-.qfix__bulb { display: flex; align-items: center; gap: .6cqw; padding: .6cqw 1.3cqw; border-bottom: 1px solid rgba(255, 255, 255, .08); font: 500 .9cqw/1 var(--font-body); color: #8C9BB3; }
-.qfix__bulb .ico { color: #FFC857; font-size: 1.2cqw; }
-
-/* Three checklist cards side by side */
-.row3 { grid-template-columns: repeat(3, 1fr); }
-.row3 .checklist li { font-size: 1.32cqw; }
+/* Project tree with longer file names */
+.tree--wide .row { grid-template-columns: 24cqw 1fr; }
